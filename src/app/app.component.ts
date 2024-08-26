@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { CalcService } from './calc.service';
 
 enum CALC {
   ADD,
@@ -28,31 +28,33 @@ export class AppComponent {
 
   public CALC = CALC;
 
+  calcService = inject(CalcService)
+
   num1 = 3;
   num2 = 4;
-  private _result = 0;
-  get result(): number {
-    return this._result;
-  }
-  set result(value: number) {
-    this._result = value;
-    this.postResult(value);
+  result = 0;
+  
+  calculate(calcIndex: CALC) {
+    this.calc[calcIndex].func()
+    this.calcService.postResult(
+      this.num1,
+      this.num2,
+      this.result,
+      this.calc[calcIndex].name
+    ).subscribe({
+      next: (response) => {
+        console.log(`Successfully posted result ${response}!`)
+      },
+      error: (error) => {
+        console.error("Post request of calc result was unsuccessful.", error)
+      }
+    });
   }
 
   recentlyHovered: CALC = CALC.ADD;
   calc: Calc[] = [];
 
-  postResult(result: number) {
-    this.http.post<number>(
-      "http://localhost:3000/api/calc",
-      result.toString(),
-    )
-    .subscribe((response: number) => {
-      console.log(`Successfully logged result ${response}!`)
-    });
-  }
-
-  constructor(private http: HttpClient) {
+  constructor() {
     this.calc[CALC.ADD] = {
       symbol: "+",
       name: "Add",

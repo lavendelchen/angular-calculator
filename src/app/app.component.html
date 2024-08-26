@@ -8,7 +8,7 @@
   <button
     (mouseover)="recentlyHovered = $index"
     (focus)="recentlyHovered = $index"
-    (click)="operation.func()"
+    (click)="calculate($index)"
   >
     {{ operation.name }}
   </button>
