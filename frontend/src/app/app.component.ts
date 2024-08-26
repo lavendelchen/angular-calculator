@@ -24,15 +24,17 @@ interface Calc {
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'angular-balluff';
 
   public CALC = CALC;
 
   calcService = inject(CalcService)
 
+  title = 'angular-balluff';
   num1 = 3;
   num2 = 4;
   result = 0;
+  recentlyHovered: CALC = CALC.ADD;
+  calc: Calc[] = [];
   
   calculate(calcIndex: CALC) {
     this.calc[calcIndex].func()
@@ -50,9 +52,6 @@ export class AppComponent {
       }
     });
   }
-
-  recentlyHovered: CALC = CALC.ADD;
-  calc: Calc[] = [];
 
   constructor() {
     this.calc[CALC.ADD] = {
