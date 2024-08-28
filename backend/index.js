@@ -19,6 +19,16 @@ const saveData = (data) => {
     })
 }
 
+async function fetchData() {
+  try {
+    const data = await fs.readFile(dataPath, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading JSON file:', error);
+    throw error
+  }
+}
+
 app.use(cors({
   origin: "http://localhost:4200",
   methods: "GET,POST,PUT,DELETE",
@@ -40,6 +50,15 @@ app.post("/api/calc", (request, response) => {
   saveData(calc)
 
   response.json(calc.result)
+})
+
+app.get("/api/calc", (request, response) => {
+  fetchData().then(data => {
+    response.json(data)
+  })
+  .catch(error => {
+    response.status(500).send("Uh-oh, couldn't fetch data")
+  })
 })
 
 app.listen(port, console.log(`App listening on Port ${port}`))

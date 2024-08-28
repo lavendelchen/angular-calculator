@@ -25,4 +25,10 @@ export class CalcService {
       JSON.stringify(calc)
     )
   }
+
+  getResult(): Observable<any> {
+    return this.http.get(
+      "http://localhost:3000/api/calc"
+    )
+  }
 }

@@ -53,6 +53,17 @@ export class AppComponent {
     });
   }
 
+  getLastResult() {
+    this.calcService.getResult().subscribe({
+      next: (response) => {
+        console.log("Successfully fetched result " + JSON.stringify(response, null, 2))
+      },
+      error: (error) => {
+        console.error("Couldn't get the result :((")
+      }
+    })
+  }
+
   constructor() {
     this.calc[CALC.ADD] = {
       symbol: "+",
