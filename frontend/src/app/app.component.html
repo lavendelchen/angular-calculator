@@ -13,9 +13,20 @@
     {{ operation.name }}
   </button>
 }
+
 <button
   class="lastResultButton"
   (click)="getLastResult()"
 >
   Get last result
 </button>
+@if (lastResult) {
+  Last result:
+  {{ lastResult.num1 }}
+  {{ getLastResultSymbol() }}
+  {{ lastResult.num2 }}
+  =
+  {{ lastResult.result }}
+  <br>
+  on {{ lastResult.timestamp }}
+}

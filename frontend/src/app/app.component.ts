@@ -3,17 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CalcService } from './calc.service';
 
+import { Calculation as Calc, Operation as Op } from './app.types';
+
 enum CALC {
   ADD,
   SUBTRACT,
   MULTIPLY,
   DIVIDE
-}
-
-interface Calc {
-  symbol: string;
-  name: string;
-  func: () => void
 }
 
 @Component({
@@ -34,7 +30,8 @@ export class AppComponent {
   num2 = 4;
   result = 0;
   recentlyHovered: CALC = CALC.ADD;
-  calc: Calc[] = [];
+  calc: Op[] = [];
+  lastResult: null | Calc = null
   
   calculate(calcIndex: CALC) {
     this.calc[calcIndex].func()
@@ -56,12 +53,21 @@ export class AppComponent {
   getLastResult() {
     this.calcService.getResult().subscribe({
       next: (response) => {
-        console.log("Successfully fetched result " + JSON.stringify(response, null, 2))
+        this.lastResult = response
       },
       error: (error) => {
         console.error("Couldn't get the result :((")
       }
     })
+  }
+
+  getLastResultSymbol() {
+    const operation = this.calc.find(op => {
+      if (!this.lastResult)
+        return false
+      return op.name === this.lastResult.operation
+    });
+    return operation ? operation.symbol : 'Operation not found';
   }
 
   constructor() {

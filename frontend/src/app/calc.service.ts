@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Calc } from './app.types';
+import { Calculation as Calc } from './app.types';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,12 @@ export class CalcService {
 
   constructor(private http: HttpClient) { }
 
-  postResult(num1: number, num2: number, result: number, operation: string): Observable<any> {
+  postResult(
+    num1: number,
+    num2: number,
+    result: number,
+    operation: "Add" | "Subtract" | "Multiply" | "Divide"
+  ): Observable<any> {
     const calc: Calc = {
       num1: num1,
       num2: num2,
