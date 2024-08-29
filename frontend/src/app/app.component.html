@@ -1,18 +1,24 @@
-<input type="number" [(ngModel)]="num1">
-{{calc[recentlyHovered].symbol}}
-<input type="number" [(ngModel)]="num2">
-=
-{{ result }}
+<h1>CALCULATOR</h1>
 
-@for (operation of calc; track $index) {
-  <button
-    (mouseover)="recentlyHovered = $index"
-    (focus)="recentlyHovered = $index"
-    (click)="calculate($index)"
-  >
-    {{ operation.name }}
-  </button>
-}
+<div class="format calculation">
+  <input type="number" [(ngModel)]="num1">
+  {{calc[recentlyHovered].symbol}}
+  <input type="number" [(ngModel)]="num2">
+  <div> = </div>
+  <div>{{ result }}</div>
+</div>
+
+<div class="format operations">
+  @for (operation of calc; track $index) {
+    <button
+      (mouseover)="recentlyHovered = $index"
+      (focus)="recentlyHovered = $index"
+      (click)="calculate($index)"
+    >
+      {{ operation.name }}
+    </button>
+  }
+</div>
 
 <button
   class="lastResultButton"
