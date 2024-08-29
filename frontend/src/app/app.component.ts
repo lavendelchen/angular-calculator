@@ -50,15 +50,8 @@ export class AppComponent {
     });
   }
 
-  getLastResult() {
-    this.calcService.getResult().subscribe({
-      next: (response) => {
-        this.lastResult = response
-      },
-      error: (error) => {
-        console.error("Couldn't get the result :((")
-      }
-    })
+  async getLastResult() {
+    this.lastResult = await this.calcService.getResult()
   }
 
   getLastResultSymbol() {

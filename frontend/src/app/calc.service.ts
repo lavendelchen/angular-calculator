@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 
 import { Calculation as Calc } from './app.types';
 
@@ -31,9 +31,17 @@ export class CalcService {
     )
   }
 
-  getResult(): Observable<any> {
-    return this.http.get(
-      "http://localhost:3000/api/calc"
-    )
+  async getResult(): Promise<any> {
+    try {
+      const response = await lastValueFrom(
+        this.http.get(
+          "http://localhost:3000/api/calc"
+        )
+      )
+      return response
+    } catch (error) {
+      console.error("Couldn't get the result :((");
+      throw error
+    }
   }
 }
